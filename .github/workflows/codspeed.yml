@@ -1,0 +1,58 @@
+name: CodSpeed
+
+on:
+  push:
+    branches:
+      - "main" # or "master"
+  pull_request:
+  # `workflow_dispatch` allows CodSpeed to trigger backtest
+  # performance analysis in order to generate initial data.
+  workflow_dispatch:
+
+jobs:
+  benchmarks:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
+    env:
+      CODSPEED_LOG: debug
+    steps:
+      - uses: actions/checkout@v4
+        with: 
+          token: ${{ secrets.PAT }}
+      
+      - uses: extractions/setup-just@v2
+      
+      - name: Build the benchmark target(s)
+        run: |
+          just run
+      
+      - name: Run the benchmarks
+        uses: CodSpeedHQ/action@v3
+        with:
+          run: build/cv-bench
+          token: ${{ secrets.CODSPEED_TOKEN }}
+          upload-url: https://api.staging.preview.codspeed.io/upload
+
+  benchmarks-walltime:
+    name: Run walltime benchmarks
+    runs-on: codspeed-macro
+    env:
+      CODSPEED_LOG: debug
+    steps:
+      - uses: actions/checkout@v4
+        with: 
+          token: ${{ secrets.PAT }}
+
+      - uses: extractions/setup-just@v2
+      
+      - name: Build the benchmark target(s)
+        run: |
+          just run
+
+      - name: Run the benchmarks
+        uses: CodSpeedHQ/action@v3
+        with:
+          run: build/cv-bench
+          token: ${{ secrets.CODSPEED_TOKEN }}
+          upload-url: https://api.staging.preview.codspeed.io/upload
+          
