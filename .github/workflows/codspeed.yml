@@ -19,6 +19,8 @@ jobs:
       - uses: actions/checkout@v4
         with: 
           token: ${{ secrets.PAT }}
+      - run: git config --global url."https://not-matthias:${{ secrets.PAT }}@github.com".insteadOf "https://github.com"
+
       
       - uses: extractions/setup-just@v2
       # - uses: Dovyski/setup-opencv-action@v1.1
@@ -48,6 +50,8 @@ jobs:
       - uses: actions/checkout@v4
         with: 
           token: ${{ secrets.PAT }}
+      - run: git config --global url."https://not-matthias:${{ secrets.PAT }}@github.com".insteadOf "https://github.com"
+
 
       - uses: extractions/setup-just@v2
       # - uses: Dovyski/setup-opencv-action@v1.1
