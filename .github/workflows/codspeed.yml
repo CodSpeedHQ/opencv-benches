@@ -20,11 +20,13 @@ jobs:
         with: 
           token: ${{ secrets.PAT }}
       
-      - uses: extractions/setup-just@v2
-      - uses: Dovyski/setup-opencv-action@v1.1
-        with:
-          opencv-version: '4.0.0'
-          install-deps: false
+      # - uses: extractions/setup-just@v2
+      # - uses: Dovyski/setup-opencv-action@v1.1
+      #   with:
+      #     opencv-version: '4.0.0'
+      #     install-deps: false
+
+      - run: apt install libopencv-dev
           
       - name: Build the benchmark target(s)
         run: |
@@ -47,11 +49,13 @@ jobs:
         with: 
           token: ${{ secrets.PAT }}
 
-      - uses: extractions/setup-just@v2
-      - uses: Dovyski/setup-opencv-action@v1.1
-        with:
-          opencv-version: '4.0.0'
-          install-deps: false
+      # - uses: extractions/setup-just@v2
+      # - uses: Dovyski/setup-opencv-action@v1.1
+      #   with:
+      #     opencv-version: '4.0.0'
+      #     install-deps: false
+      
+      - run: apt install libopencv-dev
       
       - name: Build the benchmark target(s)
         run: |
