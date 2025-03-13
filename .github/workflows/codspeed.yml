@@ -24,6 +24,8 @@ jobs:
       - uses: Dovyski/setup-opencv-action@v1.1
         with:
           opencv-version: '4.0.0'
+          install-deps: false
+          
       - name: Build the benchmark target(s)
         run: |
           just run
@@ -49,6 +51,7 @@ jobs:
       - uses: Dovyski/setup-opencv-action@v1.1
         with:
           opencv-version: '4.0.0'
+          install-deps: false
       
       - name: Build the benchmark target(s)
         run: |
