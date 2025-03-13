@@ -44,7 +44,7 @@ jobs:
 
   benchmarks-walltime:
     name: Run walltime benchmarks
-    runs-on: codspeed-macro
+    runs-on: codspeed-macro-staging
     env:
       CODSPEED_LOG: debug
     steps:
