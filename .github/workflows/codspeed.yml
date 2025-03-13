@@ -20,7 +20,7 @@ jobs:
         with: 
           token: ${{ secrets.PAT }}
       
-      # - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v2
       # - uses: Dovyski/setup-opencv-action@v1.1
       #   with:
       #     opencv-version: '4.0.0'
@@ -49,7 +49,7 @@ jobs:
         with: 
           token: ${{ secrets.PAT }}
 
-      # - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v2
       # - uses: Dovyski/setup-opencv-action@v1.1
       #   with:
       #     opencv-version: '4.0.0'
