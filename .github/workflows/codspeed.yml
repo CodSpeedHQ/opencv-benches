@@ -40,13 +40,14 @@ jobs:
           unzip opencv.zip
            
           # Create build directory
-          mkdir -p build && cd build
+          mkdir -p build-opencv && cd build-opencv
            
           # Configure
-          cmake  ../opencv-4.x
+          cmake -GNinja ../opencv-4.x
            
-          # Build
-          cmake --build .
+          # Build and install
+          ninja -j
+          sudo ninja install
           
       # - uses: Dovyski/setup-opencv-action@v1.1
       #   with:
