@@ -22,14 +22,20 @@ jobs:
           lfs: true
       - run: git config --global url."https://not-matthias:${{ secrets.PAT }}@github.com".insteadOf "https://github.com"
 
-      
-      - uses: extractions/setup-just@v2
-      # - uses: Dovyski/setup-opencv-action@v1.1
-      #   with:
-      #     opencv-version: '4.0.0'
-      #     install-deps: false
+      - name: Cache opencv
+        uses: actions/cache@v3
+        with:
+          path: /usr/local
+          key: ${{ runner.os }}-build-tests-${{ hashFiles('**/CMakeLists.txt', '/usr/local/**') }}
 
-      - run: sudo apt-get update && sudo apt install -y libopencv-dev
+      - uses: extractions/setup-just@v2
+      - uses: Dovyski/setup-opencv-action@v1.1
+        with:
+          opencv-version: '4.0.0'
+          CMAKE_BUILD_TYPE: RelWithDebInfo
+          install-deps: false
+
+      # - run: sudo apt-get update && sudo apt install -y libopencv-dev
           
       - name: Build the benchmark target(s)
         run: |
@@ -54,7 +60,6 @@ jobs:
           token: ${{ secrets.PAT }}
           lfs: true
       - run: git config --global url."https://not-matthias:${{ secrets.PAT }}@github.com".insteadOf "https://github.com"
-
 
       - uses: extractions/setup-just@v2
       # - uses: Dovyski/setup-opencv-action@v1.1
