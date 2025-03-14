@@ -30,14 +30,29 @@ jobs:
 
       - uses: extractions/setup-just@v2
 
-      - run: sudo apt-get update && sudo apt-get install -y build-essential checkinstall git cmake g++ wget unzip pkg-config yasm git
-      - uses: Dovyski/setup-opencv-action@v1.1
-        with:
-          opencv-version: '4.0.0'
-          CMAKE_BUILD_TYPE: RelWithDebInfo
-          install-deps: false
-
-      # - run: sudo apt-get update && sudo apt install -y libopencv-dev
+      # https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html
+      - name: Build opencv
+        run: |
+          sudo apt update && sudo apt install -y cmake g++ wget unzip
+          
+          # Download and unpack sources
+          wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip
+          unzip opencv.zip
+           
+          # Create build directory
+          mkdir -p build && cd build
+           
+          # Configure
+          cmake  ../opencv-4.x
+           
+          # Build
+          cmake --build .
+          
+      # - uses: Dovyski/setup-opencv-action@v1.1
+      #   with:
+      #     opencv-version: '4.0.0'
+      #     CMAKE_BUILD_TYPE: RelWithDebInfo
+      #     install-deps: false
           
       - name: Build the benchmark target(s)
         run: |
