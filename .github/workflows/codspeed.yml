@@ -46,7 +46,7 @@ jobs:
           cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ../opencv-4.x
            
           # Build and install
-          ninja -j
+          ninja -j$(nproc)
           sudo ninja install
           
       # - uses: Dovyski/setup-opencv-action@v1.1
