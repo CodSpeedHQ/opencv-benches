@@ -43,7 +43,7 @@ jobs:
           mkdir -p build-opencv && cd build-opencv
            
           # Configure
-          cmake -GNinja ../opencv-4.x
+          cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ../opencv-4.x
            
           # Build and install
           ninja -j
