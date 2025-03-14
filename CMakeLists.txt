@@ -2,7 +2,16 @@ cmake_minimum_required(VERSION 3.12)
 project( opencv-benchmarks VERSION 0.0.0 LANGUAGES CXX)
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
-add_executable( cv-bench src/main.cpp src/classifier.cpp)
+add_executable(
+    cv-bench
+    src/main.cpp
+    src/classifier.cpp
+    src/color_conversion.cpp
+    src/edge_detection.cpp
+    src/filter.cpp
+    src/read_image.cpp
+    src/transform.cpp
+)
 target_link_libraries( cv-bench ${OpenCV_LIBS} )
 
 
@@ -18,4 +27,3 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(google_benchmark)
 target_link_libraries(cv-bench benchmark::benchmark)
-
