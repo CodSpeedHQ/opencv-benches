@@ -3,7 +3,7 @@ clean:
 
 run:
     cp -r assets/ build/
-    cmake --build ./build --target run_all_benchmarks
+    cd build && ninja run_all_benchmarks
 
 build:
     mkdir -p build

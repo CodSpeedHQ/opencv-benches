@@ -17,7 +17,7 @@ jobs:
       CODSPEED_LOG: debug
     steps:
       - uses: actions/checkout@v4
-        with: 
+        with:
           lfs: true
       - uses: extractions/setup-just@v2
 
@@ -31,30 +31,29 @@ jobs:
       - name: Build opencv
         run: |
           sudo apt update && sudo apt install -y cmake g++ wget unzip
-          
+
           # Download and unpack sources
           wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip
           unzip opencv.zip
-           
+
           # Create build directory
           mkdir -p build-opencv && cd build-opencv
-           
+
           # Configure
           cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ../opencv-4.x
-           
+
           # Build and install
           ninja -j$(nproc)
           sudo ninja install
-          
+
       - name: Build the benchmark target(s)
         run: |
           just build-instrumentation
-          just run
 
       - name: Run the benchmarks
         uses: CodSpeedHQ/action@v3
         with:
-          run: build/cv-bench
+          run: just run
           token: ${{ secrets.CODSPEED_TOKEN }}
           upload-url: https://api.staging.preview.codspeed.io/upload
 
@@ -65,21 +64,19 @@ jobs:
       CODSPEED_LOG: debug
     steps:
       - uses: actions/checkout@v4
-        with: 
+        with:
           lfs: true
       - uses: extractions/setup-just@v2
-      
+
       - run: sudo apt-get update && sudo apt install -y libopencv-dev
-      
+
       - name: Build the benchmark target(s)
         run: |
           just build-walltime
-          just run
 
       - name: Run the benchmarks
         uses: CodSpeedHQ/action@v3
         with:
-          run: build/cv-bench
+          run: just run
           token: ${{ secrets.CODSPEED_TOKEN }}
           upload-url: https://api.staging.preview.codspeed.io/upload
-          
