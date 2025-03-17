@@ -6,21 +6,9 @@
 #include "opencv2/objdetect.hpp"
 #include "opencv2/videoio.hpp"
 
-int detect(const std::string& cascadePath,
-           const std::string& imagePath,
+int detect(cv::CascadeClassifier& cat_cascade,
+           const cv::Mat& image,
            bool showImage = false) {
-  cv::CascadeClassifier cat_cascade;
-  if (!cat_cascade.load(cascadePath)) {
-    std::cerr << "Error loading cat cascade classifier file" << std::endl;
-    return -1;
-  }
-
-  cv::Mat image = cv::imread(imagePath);
-  if (image.empty()) {
-    std::cerr << "Error loading image" << std::endl;
-    return -1;
-  }
-
   // Convert the image to grayscale
   cv::Mat gray;
   cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
@@ -48,23 +36,28 @@ int detect(const std::string& cascadePath,
   return 0;
 }
 
-static void BM_ClassifyCat(benchmark::State& state) {
+class ClassifierFixture : public benchmark::Fixture {
+ public:
+  cv::Mat img;
+  cv::CascadeClassifier cat_cascade;
+
+  void SetUp(const ::benchmark::State&) override {
+    img = cv::imread("assets/dog_bike_car.jpg");
+    if (img.empty())
+      throw std::runtime_error("Cannot open image");
+
+    cat_cascade.load("assets/haarcascade_frontalcatface.xml");
+    if (cat_cascade.empty())
+      throw std::runtime_error("Cannot load cascade");
+  }
+};
+
+BENCHMARK_DEFINE_F(ClassifierFixture, BM_ClassifyCat)(benchmark::State& state) {
   for (auto _ : state) {
-    int result = detect("assets/haarcascade_frontalcatface.xml",
-                        "assets/cat_on_table.jpg");
+    int result = detect(cat_cascade, img);
     if (result != 0) {
       state.SkipWithError("Error in detect()");
     }
   }
 }
-
-BENCHMARK(BM_ClassifyCat);
-
-#ifdef TESTING
-#include <iostream>
-int main() {
-  int result = detect("assets/haarcascade_frontalcatface.xml",
-                      "assets/cat_on_table.jpg");
-  std::cout << "Result: " << result << std::endl;
-}
-#endif
+BENCHMARK_REGISTER_F(ClassifierFixture, BM_ClassifyCat);
