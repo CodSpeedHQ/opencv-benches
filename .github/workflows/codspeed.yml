@@ -18,17 +18,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: 
-          token: ${{ secrets.PAT }}
           lfs: true
-      - run: git config --global url."https://not-matthias:${{ secrets.PAT }}@github.com".insteadOf "https://github.com"
+      - uses: extractions/setup-just@v2
 
       - name: Cache opencv
         uses: actions/cache@v3
         with:
           path: build-opencv
           key: ${{ runner.os }}-build-opencv
-
-      - uses: extractions/setup-just@v2
 
       # https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html
       - name: Build opencv
@@ -48,12 +45,6 @@ jobs:
           # Build and install
           ninja -j$(nproc)
           sudo ninja install
-          
-      # - uses: Dovyski/setup-opencv-action@v1.1
-      #   with:
-      #     opencv-version: '4.0.0'
-      #     CMAKE_BUILD_TYPE: RelWithDebInfo
-      #     install-deps: false
           
       - name: Build the benchmark target(s)
         run: |
@@ -75,15 +66,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: 
-          token: ${{ secrets.PAT }}
           lfs: true
-      - run: git config --global url."https://not-matthias:${{ secrets.PAT }}@github.com".insteadOf "https://github.com"
-
       - uses: extractions/setup-just@v2
-      # - uses: Dovyski/setup-opencv-action@v1.1
-      #   with:
-      #     opencv-version: '4.0.0'
-      #     install-deps: false
       
       - run: sudo apt-get update && sudo apt install -y libopencv-dev
       
@@ -91,7 +75,6 @@ jobs:
         run: |
           just build-walltime
           just run
-
 
       - name: Run the benchmarks
         uses: CodSpeedHQ/action@v3

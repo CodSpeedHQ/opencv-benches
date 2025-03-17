@@ -61,3 +61,5 @@ BENCHMARK_DEFINE_F(ClassifierFixture, BM_ClassifyCat)(benchmark::State& state) {
   }
 }
 BENCHMARK_REGISTER_F(ClassifierFixture, BM_ClassifyCat);
+
+BENCHMARK_MAIN();

@@ -2,7 +2,8 @@ clean:
     rm -rf build
 
 run:
-    ./build/cv-bench
+    cp -r assets/ build/
+    cmake --build ./build --target run_all_benchmarks
 
 build:
     mkdir -p build
