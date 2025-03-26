@@ -54,12 +54,10 @@ jobs:
         uses: CodSpeedHQ/action@v3
         with:
           run: just run
-          token: ${{ secrets.CODSPEED_TOKEN }}
-          upload-url: https://api.staging.preview.codspeed.io/upload
 
   benchmarks-walltime:
     name: Run walltime benchmarks
-    runs-on: codspeed-macro-staging
+    runs-on: codspeed-macro
     env:
       CODSPEED_LOG: debug
     steps:
@@ -78,5 +76,3 @@ jobs:
         uses: CodSpeedHQ/action@v3
         with:
           run: just run
-          token: ${{ secrets.CODSPEED_TOKEN }}
-          upload-url: https://api.staging.preview.codspeed.io/upload
